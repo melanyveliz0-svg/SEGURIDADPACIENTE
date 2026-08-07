@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,14 +7,15 @@
 <meta name="description" content="Dashboard de Monitoreo de Actividades - Sistema de Gestión de la Calidad en la seguridad del Paciente. Grupo Hospitalario Kennedy.">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 :root {
   --primary: #E66E0A;
   --primary-dark: #C45C05;
@@ -134,7 +134,7 @@ body {
   width: 380px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   flex-shrink: 0;
 }
 .sidebar-widget {
@@ -145,13 +145,8 @@ body {
   flex-direction: column;
   overflow: hidden;
 }
-.left-sidebar .sidebar-widget:first-child {
-  height: 140px;
-  min-height: 140px;
-  justify-content: center;
-}
 .sidebar-header {
-  padding: 1.2rem 1.5rem 0.6rem 1.5rem;
+  padding: 1.5rem;
   background: #f8f9fa;
   border-bottom: 1px solid var(--border);
 }
@@ -222,12 +217,10 @@ body {
 }
 
 .dashboard-data {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .content-header {
@@ -249,48 +242,34 @@ body {
 
 /* MAIN CONTENT HEADER (Title & Area) */
 .doc-header {
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 0.8rem 1.5rem;
-  height: 140px;
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0;
-  border-bottom: none;
+  margin-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
   text-align: center;
-  overflow: hidden;
 }
 .doc-title {
-  font-size: 1.35rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: var(--primary-dark);
-  margin-bottom: 0.3rem;
+  margin-bottom: 1rem;
   text-transform: uppercase;
-  line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 .doc-areas-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem;
-  margin-top: 0.2rem;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 .doc-area-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 1.2rem;
+  gap: 0.8rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 50px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   letter-spacing: 0.5px;
   color: #fff;
 }
@@ -305,34 +284,30 @@ body {
 .doc-area-badge.area-default { background: #95A5A6; } /* Gray */
 
 .doc-area-badge i {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 /* VISUALS GRID (Calendar, Circle, Gauge) */
 .visuals-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 2rem;
   align-items: stretch;
-}
-@media(max-width: 1100px) {
-  .visuals-grid {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  }
 }
 .visual-widget {
   background: var(--white);
-  border-radius: var(--radius);
-  padding: 1.8rem 1.5rem;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
   box-shadow: var(--shadow);
   text-align: center;
   border: none;
   aspect-ratio: auto;
-  height: 330px; /* Uniform height aligned across dashboard */
+  height: 100%;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.2rem;
+  gap: 1.5rem;
   align-items: center;
   transition: box-shadow 0.3s ease;
 }
@@ -396,17 +371,13 @@ body {
 
 /* GAUGE WRAPPER */
 .gauge-widget {
-  padding: 1.5rem 1rem;
-  justify-content: space-between;
+  height: auto;
+  min-height: 320px;
 }
 .gauge-widget .chart-wrapper {
   position: relative;
   width: 100%;
   height: 200px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: 0 auto;
 }
 
@@ -471,6 +442,14 @@ body {
         <canvas id="typeChart"></canvas>
       </div>
     </div>
+
+    <!-- Carga por Áreas en Sidebar -->
+    <div id="left-sidebar-areas-widget" class="sidebar-widget" style="padding: 1.5rem;">
+      <h3 style="font-size: 1rem; margin-bottom: 1rem; color: #34495E; text-align: center; font-weight: 700; text-transform: uppercase;">Distribución por Áreas</h3>
+      <div style="position: relative; height: 200px; width: 100%;">
+        <canvas id="overviewAreasChart"></canvas>
+      </div>
+    </div>
   </aside>
 
   <!-- CONTENT -->
@@ -478,33 +457,21 @@ body {
     
     <div id="welcome-message" class="welcome-box">
       <!-- Progress Bar KPI -->
-      <div class="overview-chart-large visual-widget progress-widget" style="min-height: auto; margin-top: 0; padding-top: 1.5rem; height: auto;">
-        <h2 style="color: var(--primary-dark); margin-top: 0; margin-bottom: 0.5rem; text-transform: uppercase; text-align: center;">Avance Global del Sistema</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500; text-align: center;">Porcentaje de documentos en estado FINALIZADO o APROBADO respecto al total.</p>
+      <div class="overview-chart-large visual-widget progress-widget" style="min-height: auto; margin-top: 0; padding-top: 1.5rem;">
+        <h2 style="color: var(--primary-dark); margin-top: 0; margin-bottom: 0.5rem; text-transform: uppercase;">Avance Global del Sistema</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500;">Porcentaje de documentos en estado FINALIZADO o APROBADO respecto al total.</p>
         <div class="progress-track" style="width: 100%; height: 20px; background: var(--border); border-radius: 20px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
           <div class="progress-fill" id="global-progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #F1C40F, #2ECC71); transition: width 1s ease-in-out;"></div>
         </div>
-        <h3 id="global-progress-text" style="color: var(--primary-dark); margin-top: 1rem; font-weight: 800; font-size: 1.8rem; text-align: center;">Cargando...</h3>
+        <h3 id="global-progress-text" style="color: var(--primary-dark); margin-top: 1rem; font-weight: 800; font-size: 1.8rem;">Cargando...</h3>
       </div>
 
-      <!-- Side-by-side grid for Distribucion de Carga por Areas & Linea de Tiempo -->
-      <div class="overview-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-        <!-- Distribución de Carga por Áreas (Left) -->
-        <div class="visual-widget" style="height: 100%; min-height: 400px; padding: 1.5rem; margin-top: 0;">
-           <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; text-align: center;">Distribución de Carga por Áreas</h2>
-           <p style="color: var(--text-muted); margin-bottom: 1rem; font-weight: 500; font-size: 0.85rem; text-align: center;">Carga documental distribuida por cada área institucional.</p>
-           <div style="position: relative; height: 300px; width: 100%;">
-             <canvas id="overviewAreasChart"></canvas>
-           </div>
-        </div>
-
-        <!-- Línea de Tiempo de Documentación (Right) -->
-        <div class="visual-widget" style="height: 100%; min-height: 400px; padding: 1.5rem; margin-top: 0;">
-          <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; text-align: center;">Línea de Tiempo de Documentación</h2>
-          <p style="color: var(--text-muted); margin-bottom: 1rem; font-weight: 500; font-size: 0.85rem; text-align: center;">Evolución temporal del ingreso de documentos.</p>
-          <div style="position: relative; height: 300px; width: 100%;">
-            <canvas id="timelineChart"></canvas>
-          </div>
+      <!-- Full width for timeline -->
+      <div class="overview-chart-large visual-widget">
+        <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem;">Línea de Tiempo de Documentación</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500;">Evolución temporal del ingreso de documentos al Sistema de Gestión de Calidad.</p>
+        <div style="position: relative; height: 350px; width: 100%;">
+          <canvas id="timelineChart"></canvas>
         </div>
       </div>
     </div>
@@ -545,13 +512,23 @@ body {
           <div class="chart-wrapper">
             <canvas id="statusChart"></canvas>
           </div>
+          <!-- Barra de Cumplimiento -->
+          <div style="width: 80%; margin: 1.5rem auto 0 auto;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 700; color: var(--primary-dark);">
+              <span style="font-size: 0.9rem; text-transform: uppercase;">Cumplimiento</span>
+              <span id="doc-compliance-text" style="font-size: 1.1rem;">0%</span>
+            </div>
+            <div class="progress-track" style="width: 100%; height: 16px; background: var(--border); border-radius: 16px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+              <div class="progress-fill" id="doc-compliance-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #3498DB, #2ECC71); transition: width 1s ease-in-out;"></div>
+            </div>
+          </div>
         </div>
 
       </div>
     </div>
   </section>
   <!-- RIGHT SIDEBAR -->
-  <aside class="sidebar right-sidebar">
+  <aside id="right-sidebar" class="sidebar right-sidebar">
     <div class="sidebar-widget" style="padding: 1.5rem;">
       <h3 style="font-size: 1rem; margin-bottom: 1rem; color: #34495E; text-align: center; font-weight: 700; text-transform: uppercase;">Fases Totales de Revisión</h3>
       <div style="position: relative; height: 300px; width: 100%;">
@@ -569,6 +546,7 @@ body {
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script>
 const SGCSP_DATA = [
     {
@@ -862,6 +840,10 @@ const SGCSP_DATA = [
 ];
 </script>
 <script>
+// Configuración global de Chart.js
+Chart.defaults.font.family = "'Montserrat', sans-serif";
+Chart.defaults.color = '#636E72';
+
 // Variables de estado
 let currentDoc = null;
 let charts = {
@@ -903,41 +885,13 @@ const AREA_ICONS = {
 
 // Inicializar la aplicación
 function init() {
-    // Normalizar CLÍNICA -> CLÍNICO en todo el conjunto de datos
-    SGCSP_DATA.forEach(doc => {
-        if (doc.AREA) {
-            doc.AREA = doc.AREA.replace(/\bCLÍNICA\b/gi, 'CLÍNICO').replace(/\bCLINICA\b/gi, 'CLÍNICO');
-        }
-    });
-
-    // Permitir clic en el Logo para regresar al Panel de Inicio
-    const logoEl = document.getElementById('logo-container');
-    if (logoEl) {
-        logoEl.style.cursor = 'pointer';
-        logoEl.addEventListener('click', showHomeView);
-    }
-
-    // 1. Renderizar lista de documentos y barra de progreso global PRIMERO (garantiza UI inmediata)
-    try { renderDocList(); } catch(e) { console.error(e); }
-    try { renderGlobalProgress(); } catch(e) { console.error(e); }
-
-    // 2. Renderizar gráficos de forma segura (con reintento si Chart.js aún no termina de cargar)
-    initCharts();
-}
-
-function initCharts() {
-    if (typeof Chart === 'undefined') {
-        setTimeout(initCharts, 150);
-        return;
-    }
-    Chart.defaults.font.family = "'Montserrat', sans-serif";
-    Chart.defaults.color = '#636E72';
-
-    try { renderGlobalChart(); } catch(e) { console.error(e); }
-    try { renderTimelineChart(); } catch(e) { console.error(e); }
-    try { renderOverviewStatusChart(); } catch(e) { console.error(e); }
-    try { renderOverviewAnnexesChart(); } catch(e) { console.error(e); }
-    try { renderOverviewAreasChart(); } catch(e) { console.error(e); }
+    renderDocList();
+    renderGlobalChart();
+    renderTimelineChart();
+    renderOverviewStatusChart();
+    renderOverviewAnnexesChart();
+    renderOverviewAreasChart();
+    renderGlobalProgress();
 }
 
 function renderGlobalProgress() {
@@ -958,7 +912,7 @@ function renderGlobalProgress() {
     if (fillEl && textEl) {
         setTimeout(() => {
             fillEl.style.width = percentage + '%';
-            textEl.textContent = `${percentage}% Completado`;
+            textEl.textContent = `${percentage}% Completado (${completed}/${total} Documentos)`;
         }, 300);
     }
 }
@@ -970,6 +924,9 @@ function renderOverviewAreasChart() {
         const areaList = areaString.split(/,| Y /i).map(a => a.trim().toUpperCase()).filter(a => a.length > 0);
         
         areaList.forEach(a => {
+            if (a === 'CLÍNICA' || a === 'CLINICA') {
+                a = 'CLÍNICO';
+            }
             areaCounts[a] = (areaCounts[a] || 0) + 1;
         });
     });
@@ -1027,6 +984,7 @@ function renderGlobalChart() {
                 borderColor: '#ffffff'
             }]
         },
+        plugins: [ChartDataLabels],
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -1034,6 +992,17 @@ function renderGlobalChart() {
                 legend: {
                     position: 'bottom',
                     labels: { boxWidth: 12, font: { size: 10 } }
+                },
+                datalabels: {
+                    color: '#fff',
+                    font: { weight: 'bold', size: 14 },
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => { sum += data; });
+                        let percentage = (value * 100 / sum).toFixed(0) + "%";
+                        return percentage;
+                    }
                 }
             }
         }
@@ -1172,11 +1141,8 @@ function renderOverviewStatusChart() {
 
 function renderOverviewAnnexesChart() {
     const annexesData = [];
-    let totalAnnexesCount = 0;
-
     SGCSP_DATA.forEach(doc => {
         let anexos = parseInt(doc.ANEXOS) || 0;
-        totalAnnexesCount += anexos;
         if (anexos > 0) {
             annexesData.push({
                 name: doc.DESCRIPCION || doc.DOCUMENTO,
@@ -1208,7 +1174,6 @@ function renderOverviewAnnexesChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '70%',
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -1219,47 +1184,11 @@ function renderOverviewAnnexesChart() {
                     }
                 }
             }
-        },
-        plugins: [{
-            id: 'doughnutCenterText',
-            afterDraw: function(chart) {
-                const { ctx, chartArea } = chart;
-                ctx.save();
-                
-                const centerX = chartArea.left + (chartArea.right - chartArea.left) / 2;
-                const centerY = chartArea.top + (chartArea.bottom - chartArea.top) / 2;
-
-                ctx.font = "bold 2.2rem 'Montserrat', sans-serif";
-                ctx.fillStyle = "#2C3E50";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(totalAnnexesCount, centerX, centerY - 8);
-
-                ctx.font = "700 0.75rem 'Montserrat', sans-serif";
-                ctx.fillStyle = "#7F8C8D";
-                ctx.fillText("TOTAL ANEXOS", centerX, centerY + 18);
-
-                ctx.restore();
-            }
-        }]
+        }
     });
 }
 
-function showHomeView() {
-    docSelectEl.value = "";
-    welcomeMsgEl.classList.remove('hidden');
-    dashboardDataEl.classList.add('hidden');
-    const rightSidebarEl = document.querySelector('.right-sidebar');
-    if (rightSidebarEl) rightSidebarEl.classList.remove('hidden');
-}
-
 function renderDocList() {
-    docSelectEl.innerHTML = '';
-    const defaultOption = document.createElement('option');
-    defaultOption.value = "";
-    defaultOption.textContent = "-- Inicio / Avance Global --";
-    docSelectEl.appendChild(defaultOption);
-
     SGCSP_DATA.forEach((doc, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -1270,8 +1199,6 @@ function renderDocList() {
     docSelectEl.addEventListener('change', (e) => {
         if (e.target.value !== "") {
             selectDocument(e.target.value);
-        } else {
-            showHomeView();
         }
     });
 }
@@ -1281,9 +1208,13 @@ function selectDocument(index) {
     
     // Ocultar bienvenida y mostrar datos
     welcomeMsgEl.classList.add('hidden');
-    dashboardDataEl.classList.remove('hidden');
-    const rightSidebarEl = document.querySelector('.right-sidebar');
+    const rightSidebarEl = document.getElementById('right-sidebar');
     if (rightSidebarEl) rightSidebarEl.classList.add('hidden');
+    
+    const leftAreasWidgetEl = document.getElementById('left-sidebar-areas-widget');
+    if (leftAreasWidgetEl) leftAreasWidgetEl.classList.add('hidden');
+
+    dashboardDataEl.classList.remove('hidden');
 
     updateUI();
     highlightPieChart(currentDoc);
@@ -1374,6 +1305,26 @@ function updateUI() {
     else if (estado === 'APROBADO') score = 7;
     else if (estado === 'FINALIZADO') score = 8;
     
+    // Configurar Cumplimiento (%)
+    let compliancePct = 0;
+    if (estado === 'ASIGNADO') compliancePct = 0;
+    else if (estado === 'PENDIENTE') compliancePct = 10;
+    else if (estado === 'EN CURSO') compliancePct = 25;
+    else if (estado === 'EN DEFINICIÓN' || estado === 'EN DEFINICION') compliancePct = 50;
+    else if (estado === 'EN REVISIÓN' || estado === 'EN REVISION' || estado === 'REVISADO') compliancePct = 80;
+    else if (estado === 'EN APROBACIÓN' || estado === 'EN APROBACION') compliancePct = 90;
+    else if (estado === 'APROBADO') compliancePct = 95;
+    else if (estado === 'FINALIZADO') compliancePct = 100;
+
+    const complianceFill = document.getElementById('doc-compliance-fill');
+    const complianceText = document.getElementById('doc-compliance-text');
+    if (complianceFill && complianceText) {
+        setTimeout(() => {
+            complianceFill.style.width = compliancePct + '%';
+            complianceText.textContent = compliancePct + '%';
+        }, 300);
+    }
+
     updateCharts(estado, score, gaugeColors);
 }
 
@@ -1404,11 +1355,10 @@ function updateCharts(estado, score, gaugeColors) {
             datasets: [{
                 data: gaugeData,
                 backgroundColor: backgroundColors,
-                borderWidth: 2,
-                borderColor: '#ffffff',
+                borderWidth: 0,
                 circumference: 180,
                 rotation: 270, // -90 grados
-                cutout: '70%'
+                cutout: '75%'
             }]
         },
         options: {
@@ -1418,7 +1368,7 @@ function updateCharts(estado, score, gaugeColors) {
             hover: { mode: null }, // Ensure hover is disabled
             events: [], // Disable hover events to fix zooming/jumping
             layout: {
-                padding: { top: 10, bottom: 38, left: 15, right: 15 }
+                padding: { bottom: 10 } // Reduced since text is no longer drawn on canvas
             },
             plugins: {
                 legend: { display: false },
@@ -1428,12 +1378,12 @@ function updateCharts(estado, score, gaugeColors) {
         plugins: [{
             id: 'gaugeTextAndNeedle',
             afterDraw: function(chart) {
-                var ctx = chart.ctx,
+                var height = chart.height,
+                    width = chart.width,
+                    ctx = chart.ctx,
                     chartArea = chart.chartArea;
                 
-                if (!chartArea) return;
-                
-                ctx.save();
+                ctx.restore();
                 
                 // --- 1. DIBUJAR FLECHA (NEEDLE) ---
                 var centerX = chartArea.left + (chartArea.right - chartArea.left) / 2;
@@ -1443,14 +1393,13 @@ function updateCharts(estado, score, gaugeColors) {
                 var sectionAngle = Math.PI / 8;
                 var angle = -Math.PI + (sectionAngle * (score - 1)) + (sectionAngle / 2);
                 
-                var maxRadius = Math.min((chartArea.right - chartArea.left) / 2, chartArea.bottom - chartArea.top);
-                var needleRadius = maxRadius * 0.73; // Escala perfecta responsiva
-                var baseWidth = 5.5;
+                var needleRadius = height * 0.55; // Aguja un poco más larga
+                var baseWidth = 8;
                 
                 ctx.translate(centerX, centerY);
                 ctx.rotate(angle);
                 
-                // Dibujar aguja en forma de triángulo/flecha elegante
+                // Dibujar flecha
                 ctx.beginPath();
                 ctx.moveTo(0, -baseWidth);
                 ctx.lineTo(needleRadius, 0);
@@ -1458,16 +1407,10 @@ function updateCharts(estado, score, gaugeColors) {
                 ctx.fillStyle = '#2C3E50';
                 ctx.fill();
                 
-                // Dibujar círculo central pivote
+                // Dibujar círculo central
                 ctx.beginPath();
-                ctx.arc(0, 0, baseWidth * 1.6, 0, Math.PI * 2);
+                ctx.arc(0, 0, baseWidth * 1.5, 0, Math.PI * 2);
                 ctx.fillStyle = '#2C3E50';
-                ctx.fill();
-
-                // Punto central interno blanco
-                ctx.beginPath();
-                ctx.arc(0, 0, baseWidth * 0.6, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFFFFF';
                 ctx.fill();
                 
                 ctx.restore();
@@ -1480,12 +1423,8 @@ function destroyCharts() {
     if (charts.status) charts.status.destroy();
 }
 
-// Iniciar de forma segura (funciona localmente y en GitHub Pages)
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
+// Iniciar
+window.addEventListener('DOMContentLoaded', init);
 
 </script>
 </body>
