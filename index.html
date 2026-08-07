@@ -367,10 +367,18 @@ body {
 }
 
 /* GAUGE WRAPPER */
+.gauge-widget {
+  padding: 1.5rem 1rem;
+  justify-content: space-between;
+}
 .gauge-widget .chart-wrapper {
   position: relative;
   width: 100%;
-  height: 180px;
+  height: 200px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 auto;
 }
 
@@ -869,6 +877,20 @@ const AREA_ICONS = {
 
 // Inicializar la aplicación
 function init() {
+    // Normalizar CLÍNICA -> CLÍNICO en todo el conjunto de datos
+    SGCSP_DATA.forEach(doc => {
+        if (doc.AREA) {
+            doc.AREA = doc.AREA.replace(/\bCLÍNICA\b/gi, 'CLÍNICO').replace(/\bCLINICA\b/gi, 'CLÍNICO');
+        }
+    });
+
+    // Permitir clic en el Logo para regresar al Panel de Inicio
+    const logoEl = document.getElementById('logo-container');
+    if (logoEl) {
+        logoEl.style.cursor = 'pointer';
+        logoEl.addEventListener('click', showHomeView);
+    }
+
     renderDocList();
     renderGlobalChart();
     renderTimelineChart();
@@ -1110,8 +1132,11 @@ function renderOverviewStatusChart() {
 
 function renderOverviewAnnexesChart() {
     const annexesData = [];
+    let totalAnnexesCount = 0;
+
     SGCSP_DATA.forEach(doc => {
         let anexos = parseInt(doc.ANEXOS) || 0;
+        totalAnnexesCount += anexos;
         if (anexos > 0) {
             annexesData.push({
                 name: doc.DESCRIPCION || doc.DOCUMENTO,
@@ -1143,6 +1168,7 @@ function renderOverviewAnnexesChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '70%',
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -1153,11 +1179,47 @@ function renderOverviewAnnexesChart() {
                     }
                 }
             }
-        }
+        },
+        plugins: [{
+            id: 'doughnutCenterText',
+            afterDraw: function(chart) {
+                const { ctx, chartArea } = chart;
+                ctx.save();
+                
+                const centerX = chartArea.left + (chartArea.right - chartArea.left) / 2;
+                const centerY = chartArea.top + (chartArea.bottom - chartArea.top) / 2;
+
+                ctx.font = "bold 2.2rem 'Montserrat', sans-serif";
+                ctx.fillStyle = "#2C3E50";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(totalAnnexesCount, centerX, centerY - 8);
+
+                ctx.font = "700 0.75rem 'Montserrat', sans-serif";
+                ctx.fillStyle = "#7F8C8D";
+                ctx.fillText("TOTAL ANEXOS", centerX, centerY + 18);
+
+                ctx.restore();
+            }
+        }]
     });
 }
 
+function showHomeView() {
+    docSelectEl.value = "";
+    welcomeMsgEl.classList.remove('hidden');
+    dashboardDataEl.classList.add('hidden');
+    const rightSidebarEl = document.querySelector('.right-sidebar');
+    if (rightSidebarEl) rightSidebarEl.classList.remove('hidden');
+}
+
 function renderDocList() {
+    docSelectEl.innerHTML = '';
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.textContent = "-- Inicio / Avance Global --";
+    docSelectEl.appendChild(defaultOption);
+
     SGCSP_DATA.forEach((doc, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -1168,6 +1230,8 @@ function renderDocList() {
     docSelectEl.addEventListener('change', (e) => {
         if (e.target.value !== "") {
             selectDocument(e.target.value);
+        } else {
+            showHomeView();
         }
     });
 }
@@ -1178,6 +1242,8 @@ function selectDocument(index) {
     // Ocultar bienvenida y mostrar datos
     welcomeMsgEl.classList.add('hidden');
     dashboardDataEl.classList.remove('hidden');
+    const rightSidebarEl = document.querySelector('.right-sidebar');
+    if (rightSidebarEl) rightSidebarEl.classList.add('hidden');
 
     updateUI();
     highlightPieChart(currentDoc);
@@ -1301,7 +1367,7 @@ function updateCharts(estado, score, gaugeColors) {
                 borderWidth: 0,
                 circumference: 180,
                 rotation: 270, // -90 grados
-                cutout: '75%'
+                cutout: '72%'
             }]
         },
         options: {
@@ -1311,7 +1377,7 @@ function updateCharts(estado, score, gaugeColors) {
             hover: { mode: null }, // Ensure hover is disabled
             events: [], // Disable hover events to fix zooming/jumping
             layout: {
-                padding: { bottom: 10 } // Reduced since text is no longer drawn on canvas
+                padding: { top: 5, bottom: 5, left: 10, right: 10 }
             },
             plugins: {
                 legend: { display: false },
@@ -1321,12 +1387,10 @@ function updateCharts(estado, score, gaugeColors) {
         plugins: [{
             id: 'gaugeTextAndNeedle',
             afterDraw: function(chart) {
-                var height = chart.height,
-                    width = chart.width,
-                    ctx = chart.ctx,
+                var ctx = chart.ctx,
                     chartArea = chart.chartArea;
                 
-                ctx.restore();
+                ctx.save();
                 
                 // --- 1. DIBUJAR FLECHA (NEEDLE) ---
                 var centerX = chartArea.left + (chartArea.right - chartArea.left) / 2;
@@ -1336,8 +1400,9 @@ function updateCharts(estado, score, gaugeColors) {
                 var sectionAngle = Math.PI / 8;
                 var angle = -Math.PI + (sectionAngle * (score - 1)) + (sectionAngle / 2);
                 
-                var needleRadius = height * 0.55; // Aguja un poco más larga
-                var baseWidth = 8;
+                var maxRadius = Math.min((chartArea.right - chartArea.left) / 2, chartArea.bottom - chartArea.top);
+                var needleRadius = maxRadius * 0.85; // Escala perfecta responsiva
+                var baseWidth = 7;
                 
                 ctx.translate(centerX, centerY);
                 ctx.rotate(angle);
