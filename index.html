@@ -912,7 +912,7 @@ function renderGlobalProgress() {
     if (fillEl && textEl) {
         setTimeout(() => {
             fillEl.style.width = percentage + '%';
-            textEl.textContent = `${percentage}% Completado (${completed}/${total} Documentos)`;
+            textEl.textContent = `${percentage}% Completado`;
         }, 300);
     }
 }
