@@ -862,10 +862,6 @@ const SGCSP_DATA = [
 ];
 </script>
 <script>
-// Configuración global de Chart.js
-Chart.defaults.font.family = "'Montserrat', sans-serif";
-Chart.defaults.color = '#636E72';
-
 // Variables de estado
 let currentDoc = null;
 let charts = {
@@ -934,6 +930,9 @@ function initCharts() {
         setTimeout(initCharts, 150);
         return;
     }
+    Chart.defaults.font.family = "'Montserrat', sans-serif";
+    Chart.defaults.color = '#636E72';
+
     try { renderGlobalChart(); } catch(e) { console.error(e); }
     try { renderTimelineChart(); } catch(e) { console.error(e); }
     try { renderOverviewStatusChart(); } catch(e) { console.error(e); }
@@ -1467,3 +1466,27 @@ function updateCharts(estado, score, gaugeColors) {
 
                 // Punto central interno blanco
                 ctx.beginPath();
+                ctx.arc(0, 0, baseWidth * 0.6, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }]
+    });
+}
+
+function destroyCharts() {
+    if (charts.status) charts.status.destroy();
+}
+
+// Iniciar de forma segura (funciona localmente y en GitHub Pages)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+
+</script>
+</body>
+</html>
