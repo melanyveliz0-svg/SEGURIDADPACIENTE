@@ -8,6 +8,7 @@
 <meta name="description" content="Dashboard de Monitoreo de Actividades - Sistema de Gestión de la Calidad en la seguridad del Paciente. Grupo Hospitalario Kennedy.">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 *, *::before, *::after {
@@ -920,13 +921,24 @@ function init() {
         logoEl.addEventListener('click', showHomeView);
     }
 
-    renderDocList();
-    renderGlobalChart();
-    renderTimelineChart();
-    renderOverviewStatusChart();
-    renderOverviewAnnexesChart();
-    renderOverviewAreasChart();
-    renderGlobalProgress();
+    // 1. Renderizar lista de documentos y barra de progreso global PRIMERO (garantiza UI inmediata)
+    try { renderDocList(); } catch(e) { console.error(e); }
+    try { renderGlobalProgress(); } catch(e) { console.error(e); }
+
+    // 2. Renderizar gráficos de forma segura (con reintento si Chart.js aún no termina de cargar)
+    initCharts();
+}
+
+function initCharts() {
+    if (typeof Chart === 'undefined') {
+        setTimeout(initCharts, 150);
+        return;
+    }
+    try { renderGlobalChart(); } catch(e) { console.error(e); }
+    try { renderTimelineChart(); } catch(e) { console.error(e); }
+    try { renderOverviewStatusChart(); } catch(e) { console.error(e); }
+    try { renderOverviewAnnexesChart(); } catch(e) { console.error(e); }
+    try { renderOverviewAreasChart(); } catch(e) { console.error(e); }
 }
 
 function renderGlobalProgress() {
@@ -1455,15 +1467,3 @@ function updateCharts(estado, score, gaugeColors) {
 
                 // Punto central interno blanco
                 ctx.beginPath();
-                ctx.arc(0, 0, baseWidth * 0.6, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fill();
-                
-                ctx.restore();
-            }
-        }]
-    });
-}
-
-function destroyCharts() {
-    if (charts.status) charts.status.destroy();
