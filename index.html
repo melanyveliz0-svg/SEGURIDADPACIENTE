@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -240,25 +241,25 @@ body {
 
 /* MAIN CONTENT HEADER (Title & Area) */
 .doc-header {
-  margin-bottom: 2.5rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
   border-bottom: 2px solid var(--border);
   text-align: center;
 }
 .doc-title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--primary-dark);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
 .doc-areas-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
 }
 .doc-area-badge {
   display: inline-flex;
@@ -450,31 +451,33 @@ body {
     
     <div id="welcome-message" class="welcome-box">
       <!-- Progress Bar KPI -->
-      <div class="overview-chart-large visual-widget progress-widget" style="min-height: auto; margin-top: 0; padding-top: 1.5rem;">
-        <h2 style="color: var(--primary-dark); margin-top: 0; margin-bottom: 0.5rem; text-transform: uppercase;">Avance Global del Sistema</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500;">Porcentaje de documentos en estado FINALIZADO o APROBADO respecto al total.</p>
+      <div class="overview-chart-large visual-widget progress-widget" style="min-height: auto; margin-top: 0; padding-top: 1.5rem; height: auto;">
+        <h2 style="color: var(--primary-dark); margin-top: 0; margin-bottom: 0.5rem; text-transform: uppercase; text-align: center;">Avance Global del Sistema</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500; text-align: center;">Porcentaje de documentos en estado FINALIZADO o APROBADO respecto al total.</p>
         <div class="progress-track" style="width: 100%; height: 20px; background: var(--border); border-radius: 20px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
           <div class="progress-fill" id="global-progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #F1C40F, #2ECC71); transition: width 1s ease-in-out;"></div>
         </div>
-        <h3 id="global-progress-text" style="color: var(--primary-dark); margin-top: 1rem; font-weight: 800; font-size: 1.8rem;">Cargando...</h3>
+        <h3 id="global-progress-text" style="color: var(--primary-dark); margin-top: 1rem; font-weight: 800; font-size: 1.8rem; text-align: center;">Cargando...</h3>
       </div>
 
-      <!-- Full width for timeline -->
-      <div class="overview-chart-large visual-widget">
-        <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem;">Línea de Tiempo de Documentación</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 500;">Evolución temporal del ingreso de documentos al Sistema de Gestión de Calidad.</p>
-        <div style="position: relative; height: 350px; width: 100%;">
-          <canvas id="timelineChart"></canvas>
-        </div>
-      </div>
-      
-      <div class="overview-grid">
-        <!-- Carga por Áreas -->
-        <div class="overview-chart-small visual-widget">
-           <h3 class="widget-title" style="margin-bottom: 1rem;">Distribución de Carga por Áreas</h3>
-           <div style="position: relative; height: 280px; width: 100%;">
+      <!-- Side-by-side grid for Distribucion de Carga por Areas & Linea de Tiempo -->
+      <div class="overview-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <!-- Distribución de Carga por Áreas (Left) -->
+        <div class="visual-widget" style="height: 100%; min-height: 400px; padding: 1.5rem; margin-top: 0;">
+           <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; text-align: center;">Distribución de Carga por Áreas</h2>
+           <p style="color: var(--text-muted); margin-bottom: 1rem; font-weight: 500; font-size: 0.85rem; text-align: center;">Carga documental distribuida por cada área institucional.</p>
+           <div style="position: relative; height: 300px; width: 100%;">
              <canvas id="overviewAreasChart"></canvas>
            </div>
+        </div>
+
+        <!-- Línea de Tiempo de Documentación (Right) -->
+        <div class="visual-widget" style="height: 100%; min-height: 400px; padding: 1.5rem; margin-top: 0;">
+          <h2 style="color: var(--primary-dark); margin-bottom: 0.5rem; font-size: 1.15rem; text-transform: uppercase; text-align: center;">Línea de Tiempo de Documentación</h2>
+          <p style="color: var(--text-muted); margin-bottom: 1rem; font-weight: 500; font-size: 0.85rem; text-align: center;">Evolución temporal del ingreso de documentos.</p>
+          <div style="position: relative; height: 300px; width: 100%;">
+            <canvas id="timelineChart"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -918,7 +921,7 @@ function renderGlobalProgress() {
     if (fillEl && textEl) {
         setTimeout(() => {
             fillEl.style.width = percentage + '%';
-            textEl.textContent = `${percentage}% Completado (${completed}/${total} Documentos)`;
+            textEl.textContent = `${percentage}% Completado`;
         }, 300);
     }
 }
